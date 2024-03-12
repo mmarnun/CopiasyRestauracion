@@ -747,6 +747,8 @@ debian@agb:~$ sudo systemctl start mysql_copia.timer
 
 ## 8. Documenta el empleo de las herramientas de copia de seguridad y restauración de MongoDB.
 
+El comando `mongodump` se utiliza para realizar copias de seguridad de bases de datos MongoDB. 
+
 ```
 vagrant@mongo-alex:~$ mongodump -u alex -p alex --db camiones --authenticationDatabase camiones --out copia
 2024-03-12T17:39:30.850+0000	writing camiones.Remolque to copia/camiones/Remolque.bson
@@ -766,6 +768,8 @@ vagrant@mongo-alex:~$ mongodump -u alex -p alex --db camiones --authenticationDa
 2024-03-12T17:39:30.864+0000	done dumping camiones.Remolque_Frigorifico (0 documents)
 2024-03-12T17:39:30.865+0000	done dumping camiones.Remolque_Cisterna (0 documents)
 ```
+
+Eliminaremos la base de datos de camiones por ejemplo.
 
 ```
 Enterprise test> show dbs;
@@ -794,6 +798,8 @@ switched to db camiones
 Enterprise camiones> db.dropDatabase();
 { ok: 1, dropped: 'camiones' }
 ```
+
+Para restaurarla usaremos el comando `mongorestore`, indicando la ruta de la copia que hemos creado antes.
 
 ```
 vagrant@mongo-alex:~$ mongorestore -u alex --db camiones --authenticationDatabase camiones copia/camiones
@@ -877,4 +883,4 @@ debian@agb:~$ sudo systemctl daemon-reload
 vagrant@mongo-alex:~$ sudo systemctl enable mongo_copia.timer
 Created symlink /etc/systemd/system/timers.target.wants/mongo_copia.timer → /etc/systemd/system/mongo_copia.timer.
 vagrant@mongo-alex:~$ sudo systemctl start mongo_copia.timer
-``
+```
